@@ -13,8 +13,14 @@ namespace ASP_Account.Data
         {
             _context = context;
         }
-        
-    public async Task<ServiceResponse<string>> Login(string username, string password)
+
+
+        public IAsyncEnumerable<string> GetUsers()
+        {
+           return (IAsyncEnumerable<string>)_context.Users.Select(x => x.UserName);
+        }
+
+        public async Task<ServiceResponse<string>> Login(string username, string password)
         {
             ServiceResponse<string> response = new ServiceResponse<string>();
             User user = await _context.Users.FirstOrDefaultAsync(x => x.UserName.ToLower().Equals(username.ToLower()));
@@ -87,6 +93,8 @@ namespace ASP_Account.Data
             }
 
         }
+
+
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))

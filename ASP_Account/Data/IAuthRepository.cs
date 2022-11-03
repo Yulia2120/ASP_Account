@@ -10,7 +10,8 @@ namespace ASP_Account.Data
         Task<ServiceResponse<string>> Login(string username, string password);
         Task<bool> UserExists(string username);
         Task<bool> ValidateUser(string name);
-
+        IAsyncEnumerable<string>GetUsers();
+       
     }
 }
 

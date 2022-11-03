@@ -16,6 +16,11 @@ namespace ASP_Account.Controllers
         {
             _authRepo = authRepo;
         }
+        [HttpGet]
+        public IAsyncEnumerable<string> GetAll()
+        {
+            return _authRepo.GetUsers();
+        }
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromForm]UserRegisterDto request)
         {
