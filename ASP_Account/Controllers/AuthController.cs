@@ -1,8 +1,8 @@
 ﻿using ASP_Account.Data;
 using ASP_Account.Model;
 using ASP_Account.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ASP_Account.Controllers
 {
@@ -17,9 +17,9 @@ namespace ASP_Account.Controllers
             _authRepo = authRepo;
         }
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserRegisterDto request)
+        public async Task<IActionResult> Register([FromForm]UserRegisterDto request)
         {
-           ServiceResponse<int> response = await _authRepo.Register(
+              ServiceResponse<int> response = await _authRepo.Register(
                new User { UserName = request.UserName }, request.Password);
             if (!response.Success)
             {
@@ -27,7 +27,17 @@ namespace ASP_Account.Controllers
             }
             return Ok(response);
         }
-
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromForm]UserLoginDto request)
+        {
+            ServiceResponse<string> response = await _authRepo.Login(
+                request.UserName, request.Password);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
 
 
 

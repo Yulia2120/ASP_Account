@@ -9,6 +9,7 @@ namespace ASP_Account.Data
         Task<ServiceResponse<int>> Register(User user, string password);
         Task<ServiceResponse<string>> Login(string username, string password);
         Task<bool> UserExists(string username);
+        Task<bool> ValidateUser(string name);
 
     }
 }

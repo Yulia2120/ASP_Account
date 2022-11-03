@@ -1,5 +1,4 @@
 ﻿
-
 using ASP_Account.Model;
 using ASP_Account.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +14,36 @@ namespace ASP_Account.Data
             _context = context;
         }
         
-    public Task<ServiceResponse<string>> Login(string username, string password)
+    public async Task<ServiceResponse<string>> Login(string username, string password)
         {
-            throw new NotImplementedException();
+            ServiceResponse<string> response = new ServiceResponse<string>();
+            User user = await _context.Users.FirstOrDefaultAsync(x => x.UserName.ToLower().Equals(username.ToLower()));
+            if(user == null)
+            {
+                response.Success = false;
+                response.Message = "User not found.";
+            }
+            else if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                response.Success = false;
+                response.Message = "Wrong password";
+            }
+            else
+            {
+                response.Data = user.Id.ToString();
+            }
+            return response;
         }
 
         public async Task<ServiceResponse<int>> Register(User user, string password)
         {
-            ServiceResponse<int> response = new ServiceResponse<int>();
+                ServiceResponse<int> response = new ServiceResponse<int>();
+            if (await ValidateUser(user.UserName) == false)
+            {
+                response.Success = false;
+                response.Message = "Name must have a minimum of 3 characters";
+                return response;
+            }
             if (await UserExists(user.UserName))
             {
                 response.Success = false;
@@ -49,7 +70,14 @@ namespace ASP_Account.Data
             }
             return false;
         }
-
+        public Task<bool> ValidateUser(string name)
+        {
+            if (name.Trim().Length == 3)
+            {
+              return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
+        }
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
@@ -59,8 +87,23 @@ namespace ASP_Account.Data
             }
 
         }
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for(int i = 0; i < computedHash.Length; i++)
+                {
+                    if(computedHash[i] != passwordHash[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+      
 
-
-
+       
     }
 }
