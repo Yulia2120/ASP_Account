@@ -1,8 +1,8 @@
 ﻿using ASP_Account.Data;
 using ASP_Account.Model;
 using ASP_Account.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace ASP_Account.Controllers
 {
@@ -16,7 +16,7 @@ namespace ASP_Account.Controllers
         {
             _authRepo = authRepo;
         }
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IAsyncEnumerable<string> GetAll()
         {
             return _authRepo.GetUsers();
@@ -44,8 +44,7 @@ namespace ASP_Account.Controllers
             return Ok(response);
         }
 
-      
-
+     
 
     }
 }

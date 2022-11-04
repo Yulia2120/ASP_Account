@@ -14,7 +14,6 @@ namespace ASP_Account.Data
             _context = context;
         }
 
-
         public IAsyncEnumerable<string> GetUsers()
         {
            return (IAsyncEnumerable<string>)_context.Users.Select(x => x.UserName);
@@ -98,8 +97,7 @@ namespace ASP_Account.Data
                 return true;
             }
         }
-      
 
-       
+      
     }
 }
