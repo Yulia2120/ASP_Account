@@ -25,7 +25,7 @@ namespace ASP_Account.Controllers
         public async Task<IActionResult> Register([FromForm]UserRegisterDto request)
         {
               ServiceResponse<int> response = await _authRepo.Register(
-               new User { UserName = request.UserName }, request.Password);
+               new User { UserName = request.UserName, Email = request.Email}, request.Email, request.Password);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -44,6 +44,7 @@ namespace ASP_Account.Controllers
             return Ok(response);
         }
 
+      
 
 
     }

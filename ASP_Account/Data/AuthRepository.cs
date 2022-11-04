@@ -41,22 +41,16 @@ namespace ASP_Account.Data
             return response;
         }
 
-        public async Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<int>> Register(User user, string email, string password)
         {
-                ServiceResponse<int> response = new ServiceResponse<int>();
-            if (await ValidateUser(user.UserName) == false)
-            {
-                response.Success = false;
-                response.Message = "Name must have a minimum of 3 characters";
-                return response;
-            }
+             ServiceResponse<int> response = new ServiceResponse<int>();
             if (await UserExists(user.UserName))
             {
                 response.Success = false;
                 response.Message = "User already exists.";
                 return response;
             }
-
+            user.Email = email;
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
@@ -68,6 +62,8 @@ namespace ASP_Account.Data
                 return response;
         }
 
+        
+
         public async Task<bool> UserExists(string username)
         {
             if (await _context.Users.AnyAsync(x => x.UserName.ToLower() == username.ToLower()))
@@ -75,14 +71,6 @@ namespace ASP_Account.Data
                 return true;
             }
             return false;
-        }
-        public Task<bool> ValidateUser(string name)
-        {
-            if (name.Trim().Length == 3)
-            {
-              return Task.FromResult(true);
-            }
-            return Task.FromResult(false);
         }
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
