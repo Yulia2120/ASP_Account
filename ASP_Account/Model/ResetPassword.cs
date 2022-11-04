@@ -11,7 +11,7 @@ namespace ASP_Account.Model
         [Required]
         [StringLength(100, ErrorMessage = "Пароль должен содержать как минимум 6 символов", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]

@@ -14,21 +14,23 @@ namespace ASP_Account.Data
             _context = context;
         }
 
+       
+
         public IAsyncEnumerable<string> GetUsers()
         {
-           return (IAsyncEnumerable<string>)_context.Users.Select(x => x.UserName);
+            return (IAsyncEnumerable<string>)_context.Users.Select(x => x.UserName);
         }
 
         public async Task<ServiceResponse<string>> Login(string username, string password)
         {
             ServiceResponse<string> response = new ServiceResponse<string>();
             User user = await _context.Users.FirstOrDefaultAsync(x => x.UserName.ToLower().Equals(username.ToLower()));
-            if(user == null)
+            if (user == null)
             {
                 response.Success = false;
                 response.Message = "User not found.";
             }
-            else if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            else if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 response.Success = false;
                 response.Message = "Wrong password";
@@ -42,7 +44,7 @@ namespace ASP_Account.Data
 
         public async Task<ServiceResponse<int>> Register(User user, string email, string password)
         {
-             ServiceResponse<int> response = new ServiceResponse<int>();
+            ServiceResponse<int> response = new ServiceResponse<int>();
             if (await UserExists(user.UserName))
             {
                 response.Success = false;
@@ -54,14 +56,13 @@ namespace ASP_Account.Data
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
-                await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
-                response.Data = user.Id;
-                return response;
+            response.Data = user.Id;
+            return response;
         }
 
-        
 
         public async Task<bool> UserExists(string username)
         {
@@ -87,9 +88,9 @@ namespace ASP_Account.Data
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for(int i = 0; i < computedHash.Length; i++)
+                for (int i = 0; i < computedHash.Length; i++)
                 {
-                    if(computedHash[i] != passwordHash[i])
+                    if (computedHash[i] != passwordHash[i])
                     {
                         return false;
                     }
@@ -98,6 +99,5 @@ namespace ASP_Account.Data
             }
         }
 
-      
     }
 }

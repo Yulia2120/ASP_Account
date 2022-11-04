@@ -44,7 +44,6 @@ namespace ASP_Account.Controllers
             return Ok(response);
         }
 
-     
 
     }
 }
