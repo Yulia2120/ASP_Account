@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile
+    profileName="teddi2518-001-site1 - Web Deploy"
+    publishMethod="MSDeploy"
+    publishUrl="https://win8034.site4now.net:8172/msdeploy.axd?site=teddi2518-001-site1"
+    msdeploySite="teddi2518-001-site1"
+    userName="teddi2518-001"
+    userPWD=""
+    destinationAppUrl="http://teddi2518-001-site1.gtempurl.com/"
+    SQLServerDBConnectionString=""
+    mySQLDBConnectionString=""
+    />
+  <publishProfile
+    profileName="teddi2518-001-site1 - FTP"
+    publishMethod="FTP"
+    publishUrl="ftp://win8034.site4now.net:21/site1"
+    ftpPassiveMode="True"
+    userName="teddi2518-001"
+    userPWD=""
+    destinationAppUrl="http://teddi2518-001-site1.gtempurl.com/"
+    SQLServerDBConnectionString=""
+    mySQLDBConnectionString=""
+    />
+</publishData>

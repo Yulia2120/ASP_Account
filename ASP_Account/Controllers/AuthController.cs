@@ -3,6 +3,8 @@ using ASP_Account.Model;
 using ASP_Account.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ASP_Account.Controllers
 {
@@ -22,10 +24,10 @@ namespace ASP_Account.Controllers
             return _authRepo.GetUsers();
         }
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromForm]UserRegisterDto request)
+        public async Task<IActionResult> Register([FromForm] UserRegisterDto request)
         {
-              ServiceResponse<int> response = await _authRepo.Register(
-               new User { UserName = request.UserName, Email = request.Email}, request.Email, request.Password);
+            ServiceResponse<int> response = await _authRepo.Register(
+             new User { UserName = request.UserName, Email = request.Email }, request.Email, request.Password);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -33,7 +35,7 @@ namespace ASP_Account.Controllers
             return Ok(response);
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromForm]UserLoginDto request)
+        public async Task<IActionResult> Login([FromForm] UserLoginDto request)
         {
             ServiceResponse<string> response = await _authRepo.Login(
                 request.UserName, request.Password);
@@ -43,7 +45,13 @@ namespace ASP_Account.Controllers
             }
             return Ok(response);
         }
+      
+      
 
+       
 
     }
-}
+} 
+
+
+   

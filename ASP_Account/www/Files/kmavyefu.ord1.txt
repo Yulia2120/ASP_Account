@@ -1,0 +1,9 @@
+http://teddi2518-001-site1.gtempurl.com/api/Admin/
+
+
+http://teddi2518-001-site1.gtempurl.com/api/Auth/GetAll
+
+
+http://teddi2518-001-site1.gtempurl.com/api/Upload/UploadFile
+
+http://teddi2518-001-site1.gtempurl.com/api/Upload/GetAllFiles
