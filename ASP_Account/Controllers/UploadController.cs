@@ -41,18 +41,17 @@ namespace ASP_Account.Controllers
 
 
 
-        [HttpGet("GetTimeFiles")]
-        public IEnumerable<string> GetTimeFiles(DateTime date)
+        [HttpGet("GetTimeCreateFiles")]
+
+
+        public IEnumerable <string> GetTimeCreateFiles(DateTime date)
         {
-            string[] fileArry = Directory.GetFiles(".//www//Files//").OrderBy(p => new FileInfo(p).CreationTime == date).ToArray();
+            string[] fileArry = new DirectoryInfo(".//www//Files//").GetFiles().Select(f => f.CreationTime.Date.ToString()).ToArray();
             return fileArry;
-
         }
-
-
-
+    
 
 
 
     }
-}
+    }
